@@ -68,7 +68,7 @@ st.line_chart(sales_by_month, y="Sales")
 # Filter the DataFrame based on selected subcategories
 filtered_df = df[df["Sub_Category"].isin(selected_subcategories)]
 
-# Calculate metrics
+# Calculate and show three metrics
 total_sales = filtered_df["Sales"].sum()
 total_profit = filtered_df["Profit"].sum()
 profit_margin = (total_profit / total_sales) * 100  # Profit margin in percentage
@@ -84,6 +84,38 @@ col2.metric("Total Profit", f"${total_profit:,.2f}", border=True)
 
 # Metric 3: Profit Margin (%)
 col3.metric("Profit Margin (%)", f"{profit_margin:.2f}%", border=True)
+# Filter the DataFrame based on selected subcategories
+filtered_df = df[df["Sub_Category"].isin(selected_subcategories)]
+
+# Calculate metrics for selected subcategories
+total_sales = filtered_df["Sales"].sum()
+total_profit = filtered_df["Profit"].sum()
+profit_margin = (total_profit / total_sales) * 100  # Profit margin in percentage
+
+# Calculate overall average profit margin (across all products and categories)
+overall_total_sales = df["Sales"].sum()
+overall_total_profit = df["Profit"].sum()
+overall_profit_margin = (overall_total_profit / overall_total_sales) * 100
+
+# Calculate delta for the overall profit margin metric to show the difference between the overall average profit marg
+profit_margin_delta = profit_margin - overall_profit_margin
+
+# Display metrics in columns
+col1, col2, col3 = st.columns(3)
+
+# Metric 1: Total Sales
+col1.metric("Total Sales", f"${total_sales:,.2f}", border=True)
+
+# Metric 2: Total Profit
+col2.metric("Total Profit", f"${total_profit:,.2f}", border=True)
+
+# Metric 3: Profit Margin (%) with delta
+col3.metric(
+    "Profit Margin (%)",
+    f"{profit_margin:.2f}%",
+    delta=f"{profit_margin_delta:.2f}% vs Overall",
+    border=True
+)
 
 st.write("## Your additions")
 st.write("### (1) add a drop down for Category (https://docs.streamlit.io/library/api-reference/widgets/st.selectbox)")
