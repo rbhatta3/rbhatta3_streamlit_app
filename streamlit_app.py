@@ -17,22 +17,24 @@ st.dataframe(df.groupby("Category").sum())
 # Using as_index=False here preserves the Category as a column.  If we exclude that, Category would become the datafram index and we would need to use x=None to tell bar_chart to use the index
 st.bar_chart(df.groupby("Category", as_index=False).sum(), x="Category", y="Sales", color="#04f")
 # added a drop down for Category
-option = st.selectbox(
+# Category selection
+category = st.selectbox(
     "Category",
-    ("Fuirniture", "Office Supplies", "Technology"),
+    ("Furniture", "Office Supplies", "Technology")  # Ensure correct tuple format
 )
 
-st.write("You selected:", option)
+# Dictionary mapping categories to their respective subcategories
+subcategories = {
+    "Furniture": ["Bookcases", "Chairs", "Tables", "Furnishings"],
+    "Office Supplies": ["Labels", "Storage", "Art", "Binders", "Appliances", "Paper", "Envelopes", "Fasteners", "Supplies"],
+    "Technology": ["Phones", "Accessories", "Machines", "Copiers"]
+}  # Make sure the dictionary is properly closed
 
-#Added a multi-select for Sub_Category *in the selected Category 
-options = st.multiselect{
-    "What are your favorite subcategory of the selected category",
-  "Furniture":["Bookcases","Chairs","Tables","Furnishings"],
-  "Office Supplies":["Labels","Storage","Art","Binders","Appliances","Paper","Envelopes","Fasteners","Supplies"],
-   "Technology":["Phones","Accessories","Machines","Copiers"]
-}
-
-st.write("You selected:", options)
+# Dynamically update the multiselect options based on the selected category
+selected_subcategories = st.multiselect(
+    f"Select subcategories for {category}",  # Using f-string for dynamic text
+    subcategories.get(category, [])  # Use .get() to avoid KeyError if category is missing
+)
 
 # Aggregating by time
 # Here we ensure Order_Date is in datetime format, then set is as an index to our dataframe
