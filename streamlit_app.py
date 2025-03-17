@@ -35,31 +35,15 @@ selected_subcategories = st.multiselect(
     f"Select subcategories for {category}",  # Using f-string for dynamic text
     subcategories.get(category, [])  # Use .get() to avoid KeyError if category is missing
 )
-#added a line chart
-# Filter data based on category & selected subcategories**
-filtered_df = df[(df["Category"] == category) & (df["subcategories"].isin(selected_subcategories))]
 
-# Ensure the filtered data is not empty before processing**
-if not filtered_df.empty:
-    # Set "Order_Date" as index
-    filtered_df.set_index("Order_Date", inplace=True)
-
-    # Aggregate sales by month for selected subcategories**
-    sales_by_month = filtered_df.groupby(pd.Grouper(freq='M'))["Sales"].sum()
-
-    # Display the updated line chart for selected subcategories
-    st.write("### Sales Trend for Selected Subcategories")
-    st.line_chart(sales_by_month)
-else:
-    st.write("⚠️ No data available for the selected category and subcategories. Please select valid options.")
 
 # Aggregate sales by month for selected subcategories
-#filtered_df.set_index("Order_Date", inplace=True)
-#sales_by_month = filtered_df.groupby(pd.Grouper(freq='M'))["Sales"].sum()
+filtered_df.set_index("Order_Date", inplace=True)
+sales_by_month = filtered_df.groupby(pd.Grouper(freq='M'))["Sales"].sum()
 
 # Display the line chart
-#st.write("### Sales Trend for Selected Subcategories")
-#st.line_chart(sales_by_month)
+st.write("### Sales Trend for Selected Subcategories")
+st.line_chart(sales_by_month)
 
 
 # Aggregating by time
