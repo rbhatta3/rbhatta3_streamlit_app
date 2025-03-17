@@ -37,7 +37,7 @@ selected_subcategories = st.multiselect(
 )
 #added a line chart
 # Filter data based on category & selected subcategories**
-filtered_df = df[(df["Category"] == category) & (df["Sub-Category"].isin(selected_subcategories))]
+filtered_df = df[(df["Category"] == category) & (df["subcategories"].isin(selected_subcategories))]
 
 # Ensure the filtered data is not empty before processing**
 if not filtered_df.empty:
