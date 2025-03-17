@@ -25,12 +25,12 @@ option = st.selectbox(
 st.write("You selected:", option)
 
 #Added a multi-select for Sub_Category *in the selected Category 
-options = st.multiselect(
+options = st.multiselect{
     "What are your favorite subcategory of the selected category",
   "Furniture":["Bookcases","Chairs","Tables","Furnishings"],
   "Office Supplies":["Labels","Storage","Art","Binders","Appliances","Paper","Envelopes","Fasteners","Supplies"],
    "Technology":["Phones","Accessories","Machines","Copiers"]
-)
+}
 
 st.write("You selected:", options)
 
