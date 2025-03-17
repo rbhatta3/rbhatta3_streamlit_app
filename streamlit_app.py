@@ -53,7 +53,7 @@ st.dataframe(sales_by_month)
 # Here the grouped months are the index and automatically used for the x axis
 st.line_chart(sales_by_month, y="Sales")
 # Filter the DataFrame based on selected subcategories
-#filtered_df = df[df["Sub_Category"].isin(selected_subcategories)]
+filtered_df = df[df["Sub_Category"].isin(selected_subcategories)]
 
 # Ensure Order_Date is in datetime format and set it as the index
 filtered_df["Order_Date"] = pd.to_datetime(filtered_df["Order_Date"])
