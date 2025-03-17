@@ -65,7 +65,25 @@ st.dataframe(sales_by_month)
 
 # Here the grouped months are the index and automatically used for the x axis
 st.line_chart(sales_by_month, y="Sales")
+# Filter the DataFrame based on selected subcategories
+filtered_df = df[df["Sub_Category"].isin(selected_subcategories)]
 
+# Calculate metrics
+total_sales = filtered_df["Sales"].sum()
+total_profit = filtered_df["Profit"].sum()
+profit_margin = (total_profit / total_sales) * 100  # Profit margin in percentage
+
+# Display metrics in columns
+col1, col2, col3 = st.columns(3)
+
+# Metric 1: Total Sales
+col1.metric("Total Sales", f"${total_sales:,.2f}", border=True)
+
+# Metric 2: Total Profit
+col2.metric("Total Profit", f"${total_profit:,.2f}", border=True)
+
+# Metric 3: Profit Margin (%)
+col3.metric("Profit Margin (%)", f"{profit_margin:.2f}%", border=True)
 
 st.write("## Your additions")
 st.write("### (1) add a drop down for Category (https://docs.streamlit.io/library/api-reference/widgets/st.selectbox)")
