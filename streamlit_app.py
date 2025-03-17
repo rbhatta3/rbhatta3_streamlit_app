@@ -38,12 +38,20 @@ selected_subcategories = st.multiselect(
 
 
 # Aggregate sales by month for selected subcategories
+# Filter the DataFrame based on selected subcategories
+filtered_df = df[df["Sub_Category"].isin(selected_subcategories)]
+
+# Ensure Order_Date is in datetime format and set it as the index
+filtered_df["Order_Date"] = pd.to_datetime(filtered_df["Order_Date"])
 filtered_df.set_index("Order_Date", inplace=True)
+
+# Aggregate sales by month for selected subcategories
 sales_by_month = filtered_df.groupby(pd.Grouper(freq='M'))["Sales"].sum()
 
 # Display the line chart
 st.write("### Sales Trend for Selected Subcategories")
 st.line_chart(sales_by_month)
+
 
 
 # Aggregating by time
