@@ -36,41 +36,30 @@ selected_subcategories = st.multiselect(
     subcategories.get(category, [])  # Use .get() to avoid KeyError if category is missing
 )
 #added a line chart
-import streamlit as st
-import pandas as pd
-
-# Load data
-df = pd.read_csv("Superstore_Sales_utf8.csv", parse_dates=["Order_Date"])
-
-# Ensure "Order_Date" is datetime
-df["Order_Date"] = pd.to_datetime(df["Order_Date"])
-
-# Define category and subcategory mapping
-subcategories = {
-    "Furniture": ["Bookcases", "Chairs", "Tables", "Furnishings"],
-    "Office Supplies": ["Labels", "Storage", "Art", "Binders", "Appliances", "Paper", "Envelopes", "Fasteners", "Supplies"],
-    "Technology": ["Phones", "Accessories", "Machines", "Copiers"]
-}
-
-# Select category
-category = st.selectbox("Category", list(subcategories.keys()))
-
-# Multi-select for subcategories based on the selected category
-selected_subcategories = st.multiselect(
-    "Select subcategories for " + category,
-    subcategories[category]
-)
-
-# Filter data based on selection
+# Filter data based on category & selected subcategories**
 filtered_df = df[(df["Category"] == category) & (df["Sub-Category"].isin(selected_subcategories))]
 
+# Ensure the filtered data is not empty before processing**
+if not filtered_df.empty:
+    # Set "Order_Date" as index
+    filtered_df.set_index("Order_Date", inplace=True)
+
+    # Aggregate sales by month for selected subcategories**
+    sales_by_month = filtered_df.groupby(pd.Grouper(freq='M'))["Sales"].sum()
+
+    # Display the updated line chart for selected subcategories
+    st.write("### Sales Trend for Selected Subcategories")
+    st.line_chart(sales_by_month)
+else:
+    st.write("⚠️ No data available for the selected category and subcategories. Please select valid options.")
+
 # Aggregate sales by month for selected subcategories
-filtered_df.set_index("Order_Date", inplace=True)
-sales_by_month = filtered_df.groupby(pd.Grouper(freq='M'))["Sales"].sum()
+#filtered_df.set_index("Order_Date", inplace=True)
+#sales_by_month = filtered_df.groupby(pd.Grouper(freq='M'))["Sales"].sum()
 
 # Display the line chart
-st.write("### Sales Trend for Selected Subcategories")
-st.line_chart(sales_by_month)
+#st.write("### Sales Trend for Selected Subcategories")
+#st.line_chart(sales_by_month)
 
 
 # Aggregating by time
